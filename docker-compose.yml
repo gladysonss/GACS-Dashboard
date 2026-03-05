@@ -10,10 +10,28 @@ services:
     depends_on:
       - db
     environment:
-      DB_HOST: db
-      DB_USER: user_gacs
-      DB_PASS: secret_password
-      DB_NAME: host_gacs
+      # Application
+      APP_URL: "http://localhost"
+      APP_ENV: "production"
+      APP_DEBUG: "false"
+      APP_TIMEZONE: "America/Sao_Paulo"
+
+      # Database
+      DB_HOST: "db"
+      DB_NAME: "host_gacs"
+      DB_USER: "user_gacs"
+      DB_PASSWORD: "secret_password"
+
+      # Security & Session
+      SESSION_NAME: "GACS_SESSION"
+      SESSION_LIFETIME: "3600"
+      SESSION_SECURE: "false"
+      CSRF_TOKEN_LENGTH: "32"
+      PASSWORD_MIN_LENGTH: "8"
+
+      # Default Admin Credentials
+      DEFAULT_USERNAME: "admin"
+      DEFAULT_PASSWORD: "muda123"
 
   db:
     image: mariadb:10.11
