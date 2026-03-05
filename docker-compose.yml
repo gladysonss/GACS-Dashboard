@@ -9,6 +9,11 @@ services:
     restart: unless-stopped
     depends_on:
       - db
+    environment:
+      DB_HOST: db
+      DB_USER: user_gacs
+      DB_PASS: secret_password
+      DB_NAME: host_gacs
 
   db:
     image: mariadb:10.11
@@ -21,15 +26,9 @@ services:
       MYSQL_PASSWORD: secret_password
     volumes:
       - db_data:/var/lib/mysql
-      # Workaround for Coolify creating the file as a directory: mount the whole directory
-      - ./:/app_data/
-    command: >
-      bash -c " docker-entrypoint.sh mysqld & sleep 10s; if [ ! -f /var/lib/mysql/.gacs_initialized ]; then
-        echo 'Importing initial database...';
-        mysql -uroot -p$$MYSQL_ROOT_PASSWORD $$MYSQL_DATABASE < /app_data/database.sql;
-        touch /var/lib/mysql/.gacs_initialized;
-        echo 'Database imported successfully.';
-      fi; wait -n "
+      # Map the WHOLE current directory to docker-entrypoint-initdb.d
+      # MariaDB will automatically find database.sql inside it and import it
+      - ./:/docker-entrypoint-initdb.d/
 
 volumes:
   db_data:
