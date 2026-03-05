@@ -1,0 +1,30 @@
+version: '3.8'
+
+services:
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: gacs-dashboard-app
+    restart: unless-stopped
+    ports:
+      - "80:80"
+    depends_on:
+      - db
+
+  db:
+    image: mariadb:10.11
+    container_name: gacs-dashboard-db
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: secret_root_password
+      MYSQL_DATABASE: host_gacs
+      MYSQL_USER: user_gacs
+      MYSQL_PASSWORD: secret_password
+    volumes:
+      - db_data:/var/lib/mysql
+      # Ini akan otomatis mengimport file database.sql saat pertama kali container db dibuat
+      - ./database.sql:/docker-entrypoint-initdb.d/init.sql
+
+volumes:
+  db_data:
