@@ -29,3 +29,6 @@ require_once __DIR__ . '/database.php';
 
 // Helper Functions
 require_once __DIR__ . '/../lib/helpers.php';
+
+// Internationalization Engine
+require_once __DIR__ . '/../lib/i18n.php';
