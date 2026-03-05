@@ -1,13 +1,14 @@
 <?php
 // Database Configuration
-// ⚠️ IMPORTANT: Update these values with your actual database credentials
-define('DB_HOST', 'localhost');
-define('DB_USER', 'gacs-dev');
-define('DB_PASS', '');
-define('DB_NAME', 'gacs-dev');
+// Use environment variables or fallback to local defaults
+define('DB_HOST', getenv('DB_HOST') ?: 'db');
+define('DB_USER', getenv('DB_USER') ?: 'user_gacs');
+define('DB_PASS', getenv('DB_PASS') ?: 'secret_password');
+define('DB_NAME', getenv('DB_NAME') ?: 'host_gacs');
 
 // Create database connection
-function getDBConnection() {
+function getDBConnection()
+{
     static $conn = null;
 
     if ($conn === null) {
